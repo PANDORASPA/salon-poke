@@ -1,0 +1,103 @@
+{
+  "siteMeta": {
+    "brandName": "SALON POKE",
+    "tagline": "Bristol's home for Sealed Japanese Pokemon",
+    "aboutLead": "Salon Poke is where Bristol collectors come to <b>open boxes, share pulls and chase the chase</b>. We curate only <b>factory-sealed Japanese booster boxes</b> — the real deal, shrink-wrapped, straight from Tokyo.",
+    "aboutBody": "Six nights a week we run a <b>themed Pack Opening Night</b> with limited seats. We hold new-release <b>pre-orders</b>, run a <b>loyalty stamp card</b>, host private group nights and trade singles at the counter. Bring a friend. Bring a box. Bring your chase list.",
+    "city": "Bristol",
+    "country": "UK",
+    "address": "60A Park Row",
+    "postcode": "BS1 5LE",
+    "phoneDisplay": "+44 117 555 0182",
+    "phoneRaw": "+441175550182",
+    "whatsappRaw": "441175550182",
+    "emailPublic": "hello@salonpoke.co.uk",
+    "emailBookings": "book@salonpoke.co.uk",
+    "emailPrivacy": "privacy@salonpoke.co.uk",
+    "instagramHandle": "@salonpoke",
+    "instagramUrl": "https://instagram.com/salonpoke",
+    "tiktokHandle": "@salonpoke",
+    "tiktokUrl": "https://tiktok.com/@salonpoke",
+    "companyName": "Salon Poke Ltd",
+    "companyNumber": "14857291",
+    "vatNumber": "GB 438 927 192",
+    "tradingSince": "2023",
+    "metaDescription": "Bristol's home for sealed Japanese Pokemon TCG. Booster boxes, singles, accessories, weekly Pack Opening Nights, and pre-orders for new JP releases."
+  },
+
+  "hero": {
+    "badge": "BRISTOL · UK · JAPANESE TCG",
+    "title": "Bristol's home for",
+    "titleAccent": "Sealed Japanese Pokemon",
+    "subtitle": "Factory-sealed booster boxes · 6 weekly themed Pack Opening Nights · Loyalty rewards · Pre-orders for new JP releases.",
+    "cta1": "Shop Boxes",
+    "cta2": "Reserve a Seat →",
+    "stats": [
+      {"value": "6", "label": "Weekly Events"},
+      {"value": "£24", "label": "3-Pack Bundle"},
+      {"value": "100%", "label": "Factory Sealed"},
+      {"value": "10", "label": "Seats / Night"}
+    ]
+  },
+
+  "products": [
+    {"id": "blackBolt", "code": "SV11B", "jpCode": "黑龍", "name": "Black Bolt", "jpName": "黒炎のドラグーン", "price": 96, "tier": "TOP", "badgeText": "TOP TIER · £96", "img": "imgs/black_bolt_box.jpg", "alt": "Black Bolt booster box", "desc": "Stellar Crown · 30 packs · Dragona ex chase · Friday signature night", "stock": 4, "stockStatus": "low", "featured": true},
+    {"id": "whiteFlare", "code": "SV11W", "jpCode": "白龍", "name": "White Flare", "jpName": "ホワイトフレア", "price": 96, "tier": "TOP", "badgeText": "TOP TIER · £96", "img": "imgs/white_flare_box.jpg", "alt": "White Flare booster box", "desc": "Stellar Crown · 30 packs · White Dragnoir ex · Wednesday night", "stock": 5, "stockStatus": "low", "featured": true},
+    {"id": "pokemon151", "code": "SV2a", "jpCode": "", "name": "Pokemon 151", "jpName": "ポケモン151", "price": 78, "tier": "CLASSIC", "badgeText": "CLASSIC · £78", "img": "imgs/pokemon_151.jpg", "alt": "Pokemon 151 booster box", "desc": "Reprint · 30 packs · Original 151 chase · Monday night", "stock": 3, "stockStatus": "low", "featured": false},
+    {"id": "shinyTreasure", "code": "SV4a", "jpCode": "", "name": "Shiny Treasure ex", "jpName": "シャイニートレジャー", "price": 72, "tier": "CLASSIC", "badgeText": "CLASSIC · £72", "img": "imgs/shiny_treasure.jpg", "alt": "Shiny Treasure ex booster box", "desc": "Shiny reprint · 30 packs · Shiny chase · Tuesday night", "stock": 99, "stockStatus": "in", "featured": false},
+    {"id": "matchless", "code": "S5a", "jpCode": "", "name": "Matchless Fighter", "jpName": "一撃マスター", "price": 54, "tier": "ENTRY", "badgeText": "ENTRY · £54", "img": "imgs/matchless.jpg", "alt": "Matchless Fighter booster box", "desc": "SWSH · 30 packs · Budget entry box", "stock": 99, "stockStatus": "in", "featured": false},
+    {"id": "vmaxClimax", "code": "S8", "jpCode": "", "name": "VMAX Climax", "jpName": "VMAXクライマックス", "price": 48, "tier": "ENTRY", "badgeText": "ENTRY · £48", "img": "imgs/vmax_climax.jpg", "alt": "VMAX Climax booster box", "desc": "SWSH · 30 packs · Bulk SWSH favourite", "stock": 2, "stockStatus": "low", "featured": false}
+  ],
+
+  "pricing": {
+    "singlePack": 8,
+    "bundle3": 24,
+    "boxFrom": 48,
+    "byoEntry": 15,
+    "privateHire": 120,
+    "loyaltyFreeAfter": 9,
+    "preorderDeposit": 20,
+    "currency": "GBP"
+  },
+
+  "schedule": [
+    {"day": "MON", "dayNum": 1, "kicker": "Retro Night", "theme": "Pokemon 151", "jpTheme": "ポケモン151", "themeClass": "day-theme-151", "startTime": "19:00", "endTime": "22:00", "seats": 10, "closed": false, "singlePrice": 8, "bundlePrice": 24, "boxPrice": null, "entryPrice": null, "isFeatured": false, "isClosed": false},
+    {"day": "TUE", "dayNum": 2, "kicker": "Shiny Hunters", "theme": "Shiny Treasure", "jpTheme": "シャイニートレジャー", "themeClass": "day-theme-shiny", "startTime": "19:00", "endTime": "22:00", "seats": 10, "closed": false, "singlePrice": 8, "bundlePrice": 24, "boxPrice": null, "entryPrice": null, "isFeatured": false, "isClosed": false},
+    {"day": "WED", "dayNum": 3, "kicker": "Stellar Crown", "theme": "White Flare Night", "jpTheme": "ホワイトフレア · 白龍", "themeClass": "day-theme-white", "startTime": "19:00", "endTime": "22:00", "seats": 10, "closed": false, "singlePrice": 8, "bundlePrice": 24, "boxPrice": null, "entryPrice": null, "isFeatured": false, "isClosed": false},
+    {"day": "THU", "dayNum": 4, "kicker": "BYO Box", "theme": "Mixed Singles", "jpTheme": "持ち込み開封", "themeClass": "day-theme-mixed", "startTime": "19:00", "endTime": "22:00", "seats": 10, "closed": false, "singlePrice": null, "bundlePrice": null, "boxPrice": null, "entryPrice": 15, "isFeatured": false, "isClosed": false},
+    {"day": "FRI", "dayNum": 5, "kicker": "Stellar Crown · 黑龍", "theme": "Black Bolt Night", "jpTheme": "ブラックボルト · 黒炎のドラグーン", "themeClass": "day-theme-black", "startTime": "18:00", "endTime": "01:00", "seats": 20, "closed": false, "singlePrice": 8, "bundlePrice": 24, "boxPrice": 96, "entryPrice": null, "isFeatured": true, "isClosed": false, "sessionNote": "2 sessions"},
+    {"day": "SAT", "dayNum": 6, "kicker": "Community Day", "theme": "Family Open Box", "jpTheme": "家族DAY", "themeClass": "day-theme-family", "startTime": "14:00", "endTime": "19:00", "seats": 15, "closed": false, "singlePrice": 8, "bundlePrice": 24, "boxPrice": null, "entryPrice": null, "isFeatured": false, "isClosed": false},
+    {"day": "SUN", "dayNum": 7, "kicker": "Closed", "theme": "Private Hire", "jpTheme": "貸切営業のみ", "themeClass": "day-theme-closed", "startTime": "By booking only", "endTime": "", "seats": 6, "closed": true, "singlePrice": null, "bundlePrice": null, "boxPrice": null, "entryPrice": 120, "isFeatured": false, "isClosed": true}
+  ],
+
+  "openingHours": {
+    "monThuOpen": "11:00",
+    "monThuClose": "19:00",
+    "friOpen": "11:00",
+    "friClose": "22:00",
+    "friPackNote": "Pack Night 18:00 – 01:00",
+    "satOpen": "11:00",
+    "satClose": "19:00",
+    "satPackNote": "Community Day 14:00 – 19:00",
+    "sunNote": "Closed (Private Hire Only)",
+    "googleMapsEmbed": "https://www.google.com/maps?q=60A+Park+Row+Bristol+BS1+5LE&output=embed"
+  },
+
+  "preorder": [
+    {"id": "nightWanderer", "code": "SV9a", "jpCode": "新規", "name": "Night Wanderer", "jpName": "ナイトワンダラー", "img": "imgs/night_wanderer.jpg", "alt": "Night Wanderer booster box", "releaseDate": "18 Jul 2026", "reservedPct": 72, "desc": "30 packs · expected chase: new Dark-type ex", "isUpcoming": true, "badge": "Drops 18 Jul 2026"},
+    {"id": "megaBrave", "code": "M1L", "jpCode": "新規", "name": "MEGA Brave", "jpName": "メガブレイブ", "img": "imgs/mega_brave.jpg", "alt": "MEGA Brave booster box", "releaseDate": "15 Aug 2026", "reservedPct": 38, "desc": "30 packs · expected chase: MEGA evolution ex", "isUpcoming": false, "badge": "Drops 15 Aug 2026"},
+    {"id": "megaSymphonia", "code": "M1S", "jpCode": "新規", "name": "MEGA Symphonia", "jpName": "メガシンフォニア", "img": "imgs/mega_symphonia.jpg", "alt": "MEGA Symphonia booster box", "releaseDate": "19 Sep 2026", "reservedPct": 24, "desc": "30 packs · twin of MEGA Brave · music-themed", "isUpcoming": false, "badge": "Drops 19 Sep 2026"}
+  ],
+
+  "promo": {
+    "enabled": false,
+    "text": "",
+    "cta": "",
+    "link": "#"
+  },
+
+  "admin": {
+    "password": "salonpoke2026",
+    "sessionHours": 12
+  }
+}

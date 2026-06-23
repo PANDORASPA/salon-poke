@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://w8enj1cww1qm.space.minimaxi.com/sitemap.xml
