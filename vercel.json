@@ -1,6 +1,9 @@
 {
   "version": 2,
   "name": "salon-poke",
+  "outputDirectory": ".",
+  "installCommand": "echo No install needed",
+  "buildCommand": "echo Static site — no build step",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
