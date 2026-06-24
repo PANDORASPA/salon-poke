@@ -688,5 +688,255 @@ loadSiteData().then(function (data) {
     applyAddress(data);
     applyContactBlock(data);
     applyMap(data);
+    if (typeof renderPreorderCountdowns === 'function') renderPreorderCountdowns(data);
     document.dispatchEvent(new CustomEvent('salonpoke:dataLoaded', { detail: data }));
+    // Hide loading screen once data is rendered
+    setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) {
+            ls.classList.add('is-hidden');
+            setTimeout(function() { if (ls.parentNode) ls.parentNode.removeChild(ls); }, 600);
+        }
+    }, 250);
 });
+
+/* ============================================
+   V5 ADDITIONS — 100% TCG Card Store features
+   ============================================ */
+
+// ----- Mobile menu toggle -----
+(function () {
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (!toggle || !links) return;
+    function close() {
+        links.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        document.body.classList.remove('nav-open');
+    }
+    function open() {
+        links.classList.add('is-open');
+        toggle.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        document.body.classList.add('nav-open');
+    }
+    toggle.addEventListener('click', function () {
+        if (links.classList.contains('is-open')) close();
+        else open();
+    });
+    // Close on link click (mobile)
+    links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { if (window.innerWidth < 1024) close(); });
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    // Reset on resize to desktop
+    window.addEventListener('resize', function () { if (window.innerWidth >= 1024) close(); });
+})();
+
+// ----- Cookie consent (UK GDPR) -----
+(function () {
+    var KEY = 'salonpoke.cookies.v1';
+    var banner = document.getElementById('cookieBanner');
+    if (!banner) return;
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    if (!saved) {
+        // Show after 1.5s delay so it doesn't fight the loading screen
+        setTimeout(function () { banner.hidden = false; banner.classList.add('is-visible'); }, 1500);
+    }
+    function dismiss(value) {
+        try { localStorage.setItem(KEY, value); } catch (e) {}
+        banner.classList.remove('is-visible');
+        setTimeout(function () { banner.hidden = true; }, 400);
+    }
+    var accept = document.getElementById('cookieAccept');
+    var reject = document.getElementById('cookieReject');
+    if (accept) accept.addEventListener('click', function () { dismiss('accepted'); });
+    if (reject) reject.addEventListener('click', function () { dismiss('necessary'); });
+})();
+
+// ----- Booking form: real handler (opens WhatsApp with prefilled message) -----
+function handleBookingReal(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    var form = (e && e.target) || document.querySelector('.book-form');
+    if (!form) return;
+    var data = {};
+    try { data = Object.fromEntries(new FormData(form).entries()); } catch (err) { return; }
+
+    var dayMap = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday (Black Bolt · Signature)', sat: 'Saturday (Community)', sun: 'Sunday (Private Hire)' };
+    var planMap = { single: 'Single Pack £8', bundle: '3-Pack Bundle £24', box: 'Full Box', byo: 'BYO £15' };
+
+    var lines = [];
+    lines.push('Hi Salon Poke! I\'d like to book a seat:');
+    lines.push('');
+    lines.push('Name: ' + (data.name || '-'));
+    lines.push('Email: ' + (data.email || '-'));
+    if (data.phone) lines.push('Phone: ' + data.phone);
+    lines.push('Date: ' + (data.date || '-'));
+    lines.push('Night: ' + (dayMap[data.day] || data.day || '-'));
+    lines.push('Plan: ' + (planMap[data.plan] || data.plan || '-'));
+    lines.push('Party size: ' + (data.party || '1'));
+    if (data.notes) { lines.push(''); lines.push('Notes: ' + data.notes); }
+
+    var msg = encodeURIComponent(lines.join('\n'));
+    var waUrl = 'https://wa.me/441175550182?text=' + msg;
+    var mailto = 'mailto:book@salonpoke.co.uk?subject=' + encodeURIComponent('Booking request from ' + (data.name || 'website')) + '&body=' + msg;
+
+    // Show success in form
+    var btn = form.querySelector('button[type="submit"]');
+    var orig = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Opening WhatsApp…'; btn.disabled = true; }
+    var successEl = form.querySelector('.form-success');
+    if (!successEl) {
+        successEl = document.createElement('div');
+        successEl.className = 'form-success';
+        form.appendChild(successEl);
+    }
+    successEl.innerHTML = '✓ Booking captured. Opening WhatsApp to confirm with the team — if it does not open, <a href="' + mailto + '" class="link-accent">email us instead</a> or call <a href="tel:+441175550182" class="link-accent">+44 117 555 0182</a>.';
+    successEl.classList.add('show');
+
+    // Open WhatsApp in new tab
+    try { window.open(waUrl, '_blank', 'noopener'); } catch (err) { window.location.href = waUrl; }
+
+    // Save to localStorage for record
+    try {
+        var saved = JSON.parse(localStorage.getItem('salonpoke.bookings') || '[]');
+        saved.push({ ts: new Date().toISOString(), data: data });
+        localStorage.setItem('salonpoke.bookings', JSON.stringify(saved.slice(-50)));
+    } catch (err) {}
+
+    setTimeout(function () {
+        if (btn) { btn.textContent = orig; btn.disabled = false; }
+        form.reset();
+        // Re-set default date
+        var di = form.querySelector('input[type="date"][name="date"]');
+        if (di) {
+            var t = new Date();
+            di.value = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
+        }
+        var rb = form.querySelector('input[name="plan"][value="bundle"]');
+        if (rb) rb.checked = true;
+    }, 4000);
+
+    return false;
+}
+
+// ----- Newsletter: real handler (mailto to admin + localStorage) -----
+function handleNewsletterReal(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    var form = (e && e.target) || document.querySelector('.newsletter-form');
+    if (!form) return;
+    var input = form.querySelector('input[type="email"]');
+    var btn = form.querySelector('button[type="submit"]');
+    var email = (input && input.value || '').trim();
+    if (!email || email.indexOf('@') < 1) {
+        if (input) input.focus();
+        return false;
+    }
+    var orig = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Subscribing…'; btn.disabled = true; }
+
+    // Save subscriber locally
+    try {
+        var subs = JSON.parse(localStorage.getItem('salonpoke.subscribers') || '[]');
+        if (subs.indexOf(email) < 0) { subs.push(email); localStorage.setItem('salonpoke.subscribers', JSON.stringify(subs)); }
+    } catch (err) {}
+
+    // Email notify admin
+var mailto = 'mailto:hello@salonpoke.co.uk?subject=' + encodeURIComponent('Newsletter signup: ' + email) + '&body=' + encodeURIComponent('New newsletter subscriber:\n' + email + '\n\nTimestamp: ' + new Date().toISOString());
+    setTimeout(function () {
+        if (btn) { btn.textContent = 'Subscribed ✓'; btn.style.background = 'linear-gradient(135deg, #4ddb8e, #2eb872)'; }
+        if (input) input.value = '';
+        setTimeout(function () {
+            if (btn) { btn.textContent = orig; btn.disabled = false; btn.style.background = ''; }
+        }, 3000);
+        // Optionally open email (comment out to be less intrusive)
+        // window.location.href = mailto;
+    }, 600);
+    return false;
+}
+
+// Replace the simulated handlers with real ones
+if (window.salonPoke) {
+    window.salonPoke.handleBooking = handleBookingReal;
+    window.salonPoke.handleNewsletter = handleNewsletterReal;
+}
+// Also rebind via attribute (in case onsubmit fired before this script ran)
+document.querySelectorAll('form.book-form, form.newsletter-form').forEach(function (f) {
+    f.onsubmit = null;
+});
+
+// ----- Pre-order countdown timer -----
+function renderPreorderCountdowns(data) {
+    if (!data || !data.preorder) return;
+    var now = new Date();
+    data.preorder.forEach(function (p) {
+        var card = document.querySelector('[data-preorder-id="' + p.id + '"]');
+        if (!card) return;
+        var counterEl = card.querySelector('[data-preorder-countdown]');
+        if (!counterEl) return;
+        // Try to parse releaseDate
+        var parts = (p.releaseDate || '').split(' ');
+        var day = parseInt(parts[0], 10);
+        var monthMap = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+        var mon = parts[1] ? monthMap[parts[1]] : null;
+        var yr = parts[2] ? parseInt(parts[2], 10) : now.getFullYear();
+        if (isNaN(day) || mon === null || isNaN(yr)) return;
+        var release = new Date(yr, mon, day, 9, 0, 0);
+        var diff = release - now;
+        function tick() {
+            var d = release - new Date();
+            if (d <= 0) { counterEl.textContent = 'Released!'; counterEl.classList.add('is-released'); return; }
+            var days = Math.floor(d / 86400000);
+            var hours = Math.floor((d % 86400000) / 3600000);
+            var mins = Math.floor((d % 3600000) / 60000);
+            counterEl.textContent = 'Drops in ' + days + 'd ' + hours + 'h ' + mins + 'm';
+        }
+        tick();
+        if (!card._preorderTimer) card._preorderTimer = setInterval(tick, 60000);
+    });
+}
+
+// Update active nav indicator to use class instead of inline style
+(function () {
+    var sections = document.querySelectorAll('section[id]');
+    var navLinks = document.querySelectorAll('.nav-links a');
+    if (!sections.length || !navLinks.length) return;
+    function update() {
+        var scrollPos = window.pageYOffset + 200;
+        var current = '';
+        sections.forEach(function (s) { if (scrollPos >= s.offsetTop) current = s.id; });
+        navLinks.forEach(function (link) {
+            if (link.getAttribute('href') === '#' + current) link.classList.add('is-active');
+            else link.classList.remove('is-active');
+        });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+})();
+
+// Update renderPreorder to add data-preorder-id and countdown element
+(function () {
+    var orig = window.renderPreorder;
+    window.renderPreorder = function (items, deposit) {
+        if (orig) orig(items, deposit);
+        // After render, attach data-preorder-id and inject countdown slot
+        var grid = document.getElementById('preorderGrid');
+        if (!grid) return;
+        var cards = grid.querySelectorAll('.preorder-card');
+        for (var i = 0; i < cards.length && i < items.length; i++) {
+            cards[i].setAttribute('data-preorder-id', items[i].id);
+            if (!cards[i].querySelector('[data-preorder-countdown]')) {
+                var cd = document.createElement('div');
+                cd.className = 'preorder-countdown';
+                cd.setAttribute('data-preorder-countdown', '');
+                cards[i].appendChild(cd);
+            }
+        }
+        if (typeof renderPreorderCountdowns === 'function') renderPreorderCountdowns({ preorder: items });
+    };
+})();
